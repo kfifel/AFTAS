@@ -1,9 +1,9 @@
-package com.aftasapi.reposity.impl;
+package com.aftasapi.service.impl;
 
 import com.aftasapi.entity.Member;
 import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.repository.MemberRepository;
-import com.aftasapi.reposity.MemberService;
+import com.aftasapi.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,23 +30,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<Member> findById(Long memberId) {
-        return memberRepository.findById(memberId);
+    public Member findById(Long memberId) throws ResourceNotFoundException {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + memberId));
     }
 
     @Override
     public Member update(Member updatedMember) throws ResourceNotFoundException {
-        return memberRepository.findById(updatedMember.getId())
-                .map(member -> {
-                    member.setName(updatedMember.getName());
-                    member.setFamilyName(updatedMember.getFamilyName());
-                    member.setAccessionDate(updatedMember.getAccessionDate());
-                    member.setNationality(updatedMember.getNationality());
-                    member.setIdentityDocumentType(updatedMember.getIdentityDocumentType());
-                    member.setIdentityNumber(updatedMember.getIdentityNumber());
-                    return memberRepository.save(member);
-                })
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + updatedMember.getId()));
+        return memberRepository.save(
+                findById(updatedMember.getId()));
     }
 
     @Override

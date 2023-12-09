@@ -1,4 +1,4 @@
-package com.aftasapi.reposity;
+package com.aftasapi.service;
 
 import com.aftasapi.entity.Member;
 import com.aftasapi.exception.ResourceNotFoundException;
@@ -11,7 +11,7 @@ public interface MemberService {
 
     List<Member> findAll();
 
-    Optional<Member> findById(Long memberId);
+    Member findById(Long memberId) throws ResourceNotFoundException;
 
     Member update(Member updatedMember) throws ResourceNotFoundException;
 
