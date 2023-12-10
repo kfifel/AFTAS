@@ -28,11 +28,12 @@ public class Member {
     private IdentityDocumentType identityDocumentType;
     private String identityNumber;
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     @ToString.Exclude
     private List<Ranking> rankings;
 
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     @ToString.Exclude
     private List<Hunting> huntings;
 }
+

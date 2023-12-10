@@ -8,6 +8,8 @@ import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,14 +30,18 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<MemberDTO> getAllMembers() {
-        List<Member> all = memberService.findAll();
-        return all.stream().map(member -> modelMapper.map(member, MemberDTO.class)).collect(Collectors.toList());
+    public List<MemberDTO> getAllMembers(
+            @ParameterObject Pageable pageable
+    ) {
+        return memberService.findAll(pageable).
+                stream()
+                .map(member -> modelMapper.map(member, MemberDTO.class))
+                .toList();
     }
 
     @GetMapping("/{id}")
     public MemberDTO getMemberById(@PathVariable Long id) throws ResourceNotFoundException {
-        Member member = memberService.findById(id);
+        Member member = memberService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + id));
         return modelMapper.map(member, MemberDTO.class);
     }
 
@@ -46,7 +52,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable Long id) {
+    public void deleteMember(@PathVariable Long id) throws ResourceNotFoundException{
         memberService.deleteMember(id);
     }
 }

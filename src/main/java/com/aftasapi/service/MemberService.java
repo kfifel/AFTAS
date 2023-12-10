@@ -2,6 +2,7 @@ package com.aftasapi.service;
 
 import com.aftasapi.entity.Member;
 import com.aftasapi.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,11 +10,13 @@ import java.util.Optional;
 public interface MemberService {
     Member save(Member member);
 
-    List<Member> findAll();
+    List<Member> findAll(Pageable pageable);
 
-    Member findById(Long memberId) throws ResourceNotFoundException;
+    Optional<Member> findById(Long memberId) throws ResourceNotFoundException;
+
+    Optional<Member> findByIdentityNumber(String identityNumber);
 
     Member update(Member updatedMember) throws ResourceNotFoundException;
 
-    void deleteMember(Long memberId);
+    void deleteMember(Long memberId) throws ResourceNotFoundException;
 }

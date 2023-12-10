@@ -19,6 +19,7 @@ spring:
     username: root
     password:
   jpa:
+    open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: update

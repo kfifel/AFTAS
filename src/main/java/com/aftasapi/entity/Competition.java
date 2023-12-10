@@ -27,11 +27,11 @@ public class Competition {
     private String location;
     private Double amount;
 
-    @OneToMany
+    @OneToMany(mappedBy = "competition")
     @ToString.Exclude
     private List<Hunting> hunting;
 
-    @OneToMany
+    @OneToMany(mappedBy = "competition")
     @ToString.Exclude
     private List<Ranking> ranks;
 }
