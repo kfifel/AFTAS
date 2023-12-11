@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class MemberDTO {
 
-    private Long id;
+    private Long number;
     private String name;
     private String familyName;
     private Date accessionDate;

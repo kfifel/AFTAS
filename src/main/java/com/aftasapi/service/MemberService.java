@@ -12,7 +12,7 @@ public interface MemberService {
 
     List<Member> findAll(Pageable pageable);
 
-    Optional<Member> findById(Long memberId) throws ResourceNotFoundException;
+    Optional<Member> findById(Long memberId);
 
     Optional<Member> findByIdentityNumber(String identityNumber);
 

@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private void canMemberBeSaved(Member member) {
-        if(member.getId() != null) {
+        if(member.getNumber() != null) {
             throw new IllegalArgumentException("Member already exists");
         }
         if (findByIdentityNumber(member.getIdentityNumber()).isPresent()) {
@@ -52,8 +52,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member update(Member updatedMember) throws ResourceNotFoundException {
-        Member member = memberRepository.findById(updatedMember.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + updatedMember.getId()));
+        Member member = memberRepository.findById(updatedMember.getNumber())
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + updatedMember.getNumber()));
         if(! member.getIdentityNumber().equals(updatedMember.getIdentityNumber())) {
             throw new IllegalArgumentException("Identity number cannot be changed");
         }

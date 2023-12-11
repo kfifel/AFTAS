@@ -3,6 +3,7 @@ package com.aftasapi.web.rest;
 import com.aftasapi.dto.CompetitionDTO;
 import com.aftasapi.entity.Competition;
 import com.aftasapi.service.CompetitionService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,19 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/competitions")
+@RequiredArgsConstructor
 public class CompetitionController {
 
     private final CompetitionService competitionService;
     private final ModelMapper modelMapper;
-
-    public CompetitionController(
-            @Qualifier("competitionServiceImpl2")
-            CompetitionService competitionService,
-            ModelMapper modelMapper
-    ) {
-        this.competitionService = competitionService;
-        this.modelMapper = modelMapper;
-    }
 
     @GetMapping
     public ResponseEntity<List<CompetitionDTO>> getAllCompetition(

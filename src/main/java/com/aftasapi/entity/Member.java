@@ -17,8 +17,9 @@ import java.util.List;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
+    @SequenceGenerator(name = "member_seq", initialValue = 1000, allocationSize = 1)
+    private Long number;
 
     private String name;
     private String familyName;
