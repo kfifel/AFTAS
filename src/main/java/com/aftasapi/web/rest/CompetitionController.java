@@ -6,6 +6,7 @@ import com.aftasapi.service.CompetitionService;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +31,10 @@ public class CompetitionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CompetitionDTO>> getAllCompetition(@ParameterObject Pageable pageable) {
+    public ResponseEntity<List<CompetitionDTO>> getAllCompetition(
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false, name = "query") String query
+    ) {
         List<Competition> competitions = competitionService.findAll(pageable);
         return ResponseEntity.ok(
                 competitions

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class MemberController {
 
     @GetMapping
     public List<MemberDTO> getAllMembers(
-            @ParameterObject Pageable pageable
+            @ParameterObject @PageableDefault(2) Pageable pageable
     ) {
         return memberService.findAll(pageable).
                 stream()
