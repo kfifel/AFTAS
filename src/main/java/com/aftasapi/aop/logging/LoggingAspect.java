@@ -8,18 +8,21 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
- *
  * By default, it only runs with the "dev" profile.
  */
 @Aspect
+@Component
+@EnableAspectJAutoProxy
 public class LoggingAspect {
+
+    private final Logger aspectLogger = LoggerFactory.getLogger(LoggingAspect.class);
 
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.
@@ -69,6 +72,7 @@ public class LoggingAspect {
                 joinPoint.getSignature().getName(),
                 e.getCause() != null ? e.getCause() : "NULL"
             );
+        aspectLogger.error("Exception in {}() with cause = {}", joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL");
     }
 
     /**
@@ -81,14 +85,15 @@ public class LoggingAspect {
     @Around("applicationPackagePointcut() && springBeanPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Logger log = logger(joinPoint);
-        if (log.isDebugEnabled()) {
-            log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
-        }
+
+        //if (log.isDebugEnabled()) {
+           log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        //}
         try {
             Object result = joinPoint.proceed();
-            if (log.isDebugEnabled()) {
-                log.debug("Exit: {}() with result = {}", joinPoint.getSignature().getName(), result);
-            }
+            //if (log.isDebugEnabled()) {
+                log.info("Exit: {}() with result = {}", joinPoint.getSignature().getName(), result);
+            //}
             return result;
         } catch (IllegalArgumentException e) {
             log.error("Illegal argument: {} in {}()", Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature().getName());

@@ -12,7 +12,7 @@ public interface FishService {
 
     Fish save(Fish fish);
 
-    Fish update(Fish fish);
+    void update(Fish fish);
 
     void delete(Fish fish);
 

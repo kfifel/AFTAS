@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,17 +34,23 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public Fish update(Fish fish) {
-        return null;
+    public void update(Fish fish) {
+        if (fishRepository.existsById(fish.getName()))
+            fishRepository.delete(fish);
+
+        fishRepository.delete(fish);
     }
 
     @Override
     public void delete(Fish fish) {
+        if (fishRepository.existsById(fish.getName()))
+            fishRepository.delete(fish);
 
+        fishRepository.delete(fish);
     }
 
     @Override
     public Optional<Fish> findByName(String name) {
-        return Optional.empty();
+        return fishRepository.findByName(name);
     }
 }

@@ -1,14 +1,18 @@
 package com.aftasapi.web.rest;
 
-import com.aftasapi.dto.CompetitionDTO;
-import com.aftasapi.dto.CompetitionRegistrationDTO;
+import com.aftasapi.common.PaginatedResponse;
+import com.aftasapi.dto.*;
 import com.aftasapi.entity.Competition;
+import com.aftasapi.entity.Hunting;
+import com.aftasapi.entity.Member;
 import com.aftasapi.entity.Ranking;
 import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.service.CompetitionService;
+import com.aftasapi.service.HuntingService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,18 +27,27 @@ public class CompetitionController {
 
     private final CompetitionService competitionService;
     private final ModelMapper modelMapper;
+    private final HuntingService huntingService;
 
     @GetMapping
-    public ResponseEntity<List<CompetitionDTO>> getAllCompetition(
+    public ResponseEntity<PaginatedResponse<CompetitionDTO>> getAllCompetition(
             @ParameterObject Pageable pageable,
             @RequestParam(required = false, name = "query") String query
     ) {
-        List<Competition> competitions = competitionService.findAll(pageable);
-        return ResponseEntity.ok(
-                competitions
-                    .stream()
-                    .map(competition -> modelMapper.map(competition, CompetitionDTO.class))
-                    .toList());
+        Page<Competition> competitions = competitionService.findAll(pageable);
+        return ResponseEntity.ok().body(
+                PaginatedResponse.<CompetitionDTO>builder()
+                        .content(
+                            competitions.stream()
+                                .map(competition -> modelMapper.map(competition, CompetitionDTO.class))
+                                .toList()
+                        )
+                        .pageNumber(competitions.getNumber())
+                        .totalPages(competitions.getTotalPages())
+                        .totalElements(competitions.getTotalElements())
+                        .pageSize(competitions.getSize())
+                        .build()
+        ) ;
     }
 
     @PostMapping
@@ -57,5 +70,34 @@ public class CompetitionController {
     ) throws ResourceNotFoundException {
         Ranking save = competitionService.registerMember(competitionCode, competitionRegistrationDTO.getMemberId());
         return ResponseEntity.ok(save);
+    }
+
+    @PostMapping("/{competitionCode}/hunting")
+    public ResponseEntity<Hunting> saveHunting(
+            @PathVariable String competitionCode,
+            @RequestBody @Validated FishHuntingDto fishHuntingDto
+    ) throws ResourceNotFoundException {
+        fishHuntingDto.setCompetitionCode(competitionCode);
+        Hunting save = huntingService.save(fishHuntingDto, competitionCode);
+        return ResponseEntity.ok(save);
+    }
+
+    @GetMapping("/{competitionCode}/rankings")
+    public ResponseEntity<List<RankingDTO>> calculateRanking(@PathVariable String competitionCode) throws ResourceNotFoundException {
+        List<Ranking> rankings = competitionService.calculateRanking(competitionCode);
+        return ResponseEntity.ok(
+                rankings.stream()
+                        .map(element -> modelMapper.map(element, RankingDTO.class))
+                        .toList()
+        );
+    }
+
+    @GetMapping("/{competitionCode}/members")
+    public ResponseEntity<List<MemberDTO>> findAllMembersByCompetitionCode(@PathVariable String competitionCode) {
+        List<Member> members = competitionService.findAllMembersByCompetitionCode(competitionCode);
+        return ResponseEntity.ok(
+                members.stream()
+                        .map(element -> modelMapper.map(element, MemberDTO.class))
+                        .toList());
     }
 }

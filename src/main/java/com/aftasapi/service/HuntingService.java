@@ -6,6 +6,6 @@ import com.aftasapi.exception.ResourceNotFoundException;
 
 public interface HuntingService {
 
-    Hunting save(FishHuntingDto fishHuntingDto) throws ResourceNotFoundException;
+    Hunting save(FishHuntingDto fishHuntingDto, String competitionCode) throws ResourceNotFoundException;
 
 }

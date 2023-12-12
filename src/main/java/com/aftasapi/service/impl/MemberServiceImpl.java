@@ -73,4 +73,9 @@ public class MemberServiceImpl implements MemberService {
     public boolean existsById(Long memberId) {
         return memberRepository.existsById(memberId);
     }
+
+    @Override
+    public List<Member> findAllByCompetitionCode(String competitionCode) {
+        return memberRepository.findAllByRankingCompetitionCode(competitionCode);
+    }
 }

@@ -26,9 +26,12 @@ public class HuntingServiceImpl implements HuntingService {
     private final FishService fishService;
 
     @Override
-    public Hunting save(FishHuntingDto fishHuntingDto) throws ResourceNotFoundException {
+    public Hunting save(FishHuntingDto fishHuntingDto, String competitionCode) throws ResourceNotFoundException {
+        Competition competition = competitionService.findByCode(competitionCode)
+                .orElseThrow(() -> new ResourceNotFoundException("Competition with code " + competitionCode + " not found"));
+        fishHuntingDto.setCompetitionCode(competitionCode);
         Hunting huntingToSaved = canHuntingBeSaved(fishHuntingDto);
-
+        Hunting response;
         Optional<Hunting> findHunt = huntingRepository.findByMemberNumberAndCompetitionCodeAndFishName(
                 fishHuntingDto.getMemberId(),
                 fishHuntingDto.getCompetitionCode(),
@@ -37,11 +40,14 @@ public class HuntingServiceImpl implements HuntingService {
         if (findHunt.isPresent()) {
             Hunting hunting = findHunt.get();
             hunting.setNumberOfFish(hunting.getNumberOfFish() + 1);
-            return huntingRepository.save(hunting);
+            response = huntingRepository.save(hunting);
+        } else {
+            huntingToSaved.setNumberOfFish(1);
+            response = huntingRepository.save(huntingToSaved);
         }
-
-       huntingToSaved.setNumberOfFish(1);
-        return huntingRepository.save(huntingToSaved);
+        competition.getHunting().add(response);
+        competitionService.update(competition);
+        return response;
     }
 
     private Hunting canHuntingBeSaved(FishHuntingDto fishHuntingDto) throws ResourceNotFoundException {

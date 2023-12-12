@@ -33,3 +33,5 @@ spring:
 logging:
   file:
     name: aftas-api.log
+#  level:
+#    root: info

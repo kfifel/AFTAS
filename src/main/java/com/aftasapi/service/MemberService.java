@@ -21,4 +21,6 @@ public interface MemberService {
     void deleteMember(Long memberId) throws ResourceNotFoundException;
 
     boolean existsById(Long memberId);
+
+    List<Member> findAllByCompetitionCode(String competitionCode);
 }
