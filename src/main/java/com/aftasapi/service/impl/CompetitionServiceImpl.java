@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -26,7 +27,21 @@ public class CompetitionServiceImpl implements com.aftasapi.service.CompetitionS
     @Override
     public Competition save(Competition competition) throws IllegalArgumentException {
        canCompetitionBeSaved(competition);
+        String generateCode = generateCode(competition);
+        competition.setCode(generateCode);
+        competition.setNumberOfParticipant(0);
         return competitionRepository.save(competition);
+    }
+
+    private String generateCode(Competition competition) {
+        // the code should have the 3 first letters of the competition name + the date of the competition iml-dd-mm-yy
+        StringBuilder code = new StringBuilder();
+        code.append(competition.getLocation(), 0, 3);
+        code.append("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+        String formattedDate = dateFormat.format(competition.getDate());
+        code.append(formattedDate);
+        return code.toString();
     }
 
     private void canCompetitionBeSaved(Competition competition) throws IllegalArgumentException {

@@ -15,9 +15,11 @@ public class FishInputDto implements Serializable {
     @NotNull(message = "Name cannot be null")
     @NotBlank(message = "Name cannot be blank")
     String name;
+
     @NotNull(message = "Average weight cannot be null")
     @Positive(message = "Average weight must be positive")
     Double averageWeight;
+
     @NotNull(message = "Level code cannot be null")
     @Positive(message = "Level code must be positive")
     Long levelCode;

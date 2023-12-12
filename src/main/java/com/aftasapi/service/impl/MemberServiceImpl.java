@@ -63,9 +63,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(Long memberId) throws ResourceNotFoundException {
-        memberRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + memberId));
-
-        memberRepository.deleteById(memberId);
+        memberRepository.deleteById(member.getNumber());
     }
 }

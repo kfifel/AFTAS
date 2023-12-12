@@ -7,6 +7,7 @@ import com.aftasapi.service.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class LevelController {
     }
 
     @PostMapping
-    public ResponseEntity<LevelDto> save(@RequestBody LevelDto level){
+    public ResponseEntity<LevelDto> save(@RequestBody @Validated LevelDto level){
         Level levelSaved = levelService.save(modelMapper.map(level, Level.class));
         return ResponseEntity.ok()
                 .body(modelMapper.map(levelSaved, LevelDto.class));
