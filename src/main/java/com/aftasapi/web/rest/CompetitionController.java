@@ -1,7 +1,10 @@
 package com.aftasapi.web.rest;
 
 import com.aftasapi.dto.CompetitionDTO;
+import com.aftasapi.dto.CompetitionRegistrationDTO;
 import com.aftasapi.entity.Competition;
+import com.aftasapi.entity.Ranking;
+import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.service.CompetitionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -38,5 +41,21 @@ public class CompetitionController {
     public ResponseEntity<CompetitionDTO> createCompetition(@RequestBody @Validated CompetitionDTO competitionDTO) {
         Competition save = competitionService.save(modelMapper.map(competitionDTO, Competition.class));
         return ResponseEntity.ok(modelMapper.map(save, CompetitionDTO.class));
+    }
+
+    @GetMapping("/{competitionCode}")
+    public ResponseEntity<Competition> getCompetitionByCode(@PathVariable String competitionCode) throws ResourceNotFoundException {
+        Competition competition = competitionService.findByCode(competitionCode)
+                .orElseThrow(() -> new ResourceNotFoundException("Competition with code " + competitionCode + " not found"));
+        return ResponseEntity.ok(competition);
+    }
+
+    @PostMapping("/{competitionCode}/registrations")
+    public ResponseEntity<Ranking> registerMember(
+            @PathVariable String competitionCode,
+            @RequestBody @Validated CompetitionRegistrationDTO competitionRegistrationDTO
+    ) throws ResourceNotFoundException {
+        Ranking save = competitionService.registerMember(competitionCode, competitionRegistrationDTO.getMemberId());
+        return ResponseEntity.ok(save);
     }
 }

@@ -1,7 +1,6 @@
 package com.aftasapi.entity.embedded;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -12,6 +11,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RankingId implements Serializable {
 
     @Serial

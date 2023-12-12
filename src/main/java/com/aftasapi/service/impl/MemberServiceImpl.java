@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+
     private final MemberRepository memberRepository;
 
     @Autowired
@@ -66,5 +67,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + memberId));
         memberRepository.deleteById(member.getNumber());
+    }
+
+    @Override
+    public boolean existsById(Long memberId) {
+        return memberRepository.existsById(memberId);
     }
 }

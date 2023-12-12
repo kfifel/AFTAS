@@ -19,4 +19,6 @@ public interface MemberService {
     Member update(Member updatedMember) throws ResourceNotFoundException;
 
     void deleteMember(Long memberId) throws ResourceNotFoundException;
+
+    boolean existsById(Long memberId);
 }

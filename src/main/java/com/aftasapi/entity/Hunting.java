@@ -1,5 +1,6 @@
 package com.aftasapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,12 +20,15 @@ public class Hunting {
     private Integer numberOfFish;
 
     @ManyToOne
+    @JsonBackReference
     private Fish fish;
 
     @ManyToOne
+    @JsonBackReference
     private Member member;
 
     @ManyToOne
+    @JsonBackReference
     private Competition competition;
 
 

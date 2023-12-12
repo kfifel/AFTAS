@@ -1,5 +1,6 @@
 package com.aftasapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -29,9 +30,11 @@ public class Competition {
 
     @OneToMany(mappedBy = "competition")
     @ToString.Exclude
+    @JsonManagedReference
     private List<Hunting> hunting;
 
     @OneToMany(mappedBy = "competition")
     @ToString.Exclude
+    @JsonManagedReference
     private List<Ranking> ranks;
 }
