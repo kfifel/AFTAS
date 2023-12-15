@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Fish {
+public class Fish implements java.io.Serializable {
 
     @Id
     private String name;

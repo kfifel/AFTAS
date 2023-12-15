@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Competition {
+public class Competition implements java.io.Serializable {
 
     @Id
     private String code;

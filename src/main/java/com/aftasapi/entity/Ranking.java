@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ranking {
+public class Ranking implements java.io.Serializable{
 
     @EmbeddedId
     private RankingId id;
