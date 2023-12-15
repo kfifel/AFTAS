@@ -1,6 +1,7 @@
 package com.aftasapi.web.rest;
 
 
+import com.aftasapi.common.PaginatedResponse;
 import com.aftasapi.dto.MemberDTO;
 import com.aftasapi.dto.MemberInputDTO;
 import com.aftasapi.entity.Member;
@@ -9,12 +10,12 @@ import com.aftasapi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,13 +32,22 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<MemberDTO> getAllMembers(
-            @ParameterObject @PageableDefault(2) Pageable pageable
+    public ResponseEntity<PaginatedResponse<MemberDTO>> getAllMembers(
+            @ParameterObject Pageable pageable
     ) {
-        return memberService.findAll(pageable).
-                stream()
-                .map(member -> modelMapper.map(member, MemberDTO.class))
-                .toList();
+        Page<Member> members = memberService.findAll(pageable);
+        PaginatedResponse<MemberDTO> response = PaginatedResponse.<MemberDTO>builder()
+                .content(
+                        members.stream()
+                                .map(member -> modelMapper.map(member, MemberDTO.class))
+                                .toList()
+                )
+                .pageNumber(members.getNumber())
+                .totalPages(members.getTotalPages())
+                .totalElements(members.getTotalElements())
+                .pageSize(members.getSize())
+                .build();
+        return ResponseEntity.ok().body(response) ;
     }
 
     @GetMapping("/{id}")

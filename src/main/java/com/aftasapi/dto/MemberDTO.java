@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDTO {
+public class MemberDTO implements Serializable {
 
     private Long number;
     private String name;
@@ -21,4 +22,5 @@ public class MemberDTO {
     private String nationality;
     private IdentityDocumentType identityDocumentType;
     private String identityNumber;
+    private Integer nbrHunting;
 }

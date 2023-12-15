@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompetitionRegistrationDTO {
+public class CompetitionRegistrationDTO implements Serializable {
 
     @NotNull(message = "Member id cannot be null")
     private Long memberId;

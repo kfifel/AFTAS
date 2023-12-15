@@ -2,6 +2,7 @@ package com.aftasapi.service;
 
 import com.aftasapi.entity.Member;
 import com.aftasapi.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface MemberService {
     Member save(Member member);
 
-    List<Member> findAll(Pageable pageable);
+    Page<Member> findAll(Pageable pageable);
 
     Optional<Member> findById(Long memberId);
 
@@ -22,5 +23,5 @@ public interface MemberService {
 
     boolean existsById(Long memberId);
 
-    List<Member> findAllByCompetitionCode(String competitionCode);
+    List<Member> findAllMembersWithHuntingForCompetition(String competitionCode);
 }

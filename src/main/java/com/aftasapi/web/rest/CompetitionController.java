@@ -31,23 +31,22 @@ public class CompetitionController {
 
     @GetMapping
     public ResponseEntity<PaginatedResponse<CompetitionDTO>> getAllCompetition(
-            @ParameterObject Pageable pageable,
-            @RequestParam(required = false, name = "query") String query
+            @ParameterObject Pageable pageable
+            //@RequestParam(required = false, name = "query") String query
     ) {
         Page<Competition> competitions = competitionService.findAll(pageable);
-        return ResponseEntity.ok().body(
-                PaginatedResponse.<CompetitionDTO>builder()
-                        .content(
-                            competitions.stream()
+        PaginatedResponse<CompetitionDTO> response = PaginatedResponse.<CompetitionDTO>builder()
+                .content(
+                        competitions.stream()
                                 .map(competition -> modelMapper.map(competition, CompetitionDTO.class))
                                 .toList()
-                        )
-                        .pageNumber(competitions.getNumber())
-                        .totalPages(competitions.getTotalPages())
-                        .totalElements(competitions.getTotalElements())
-                        .pageSize(competitions.getSize())
-                        .build()
-        ) ;
+                )
+                .pageNumber(competitions.getNumber())
+                .totalPages(competitions.getTotalPages())
+                .totalElements(competitions.getTotalElements())
+                .pageSize(competitions.getSize())
+                .build();
+        return ResponseEntity.ok().body(response) ;
     }
 
     @PostMapping
@@ -97,7 +96,15 @@ public class CompetitionController {
         List<Member> members = competitionService.findAllMembersByCompetitionCode(competitionCode);
         return ResponseEntity.ok(
                 members.stream()
-                        .map(element -> modelMapper.map(element, MemberDTO.class))
+                        .map(member ->{
+                            MemberDTO memberDto = modelMapper.map(member, MemberDTO.class);
+                            final int[] count = {0};
+                            member.getHuntings().stream()
+                                    .filter(hunting -> hunting.getCompetition().getCode().equals(competitionCode))
+                                    .forEach(hunting ->count[0] += hunting.getNumberOfFish());
+                            memberDto.setNbrHunting(count[0]);
+                            return memberDto;
+                        } )
                         .toList());
     }
 }

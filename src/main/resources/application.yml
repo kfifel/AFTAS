@@ -20,7 +20,7 @@ spring:
     password:
   jpa:
     open-in-view: true
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     generate-ddl: false
@@ -33,5 +33,5 @@ spring:
 logging:
   file:
     name: aftas-api.log
-#  level:
-#    root: info
+  level:
+    root: INFO

@@ -5,6 +5,7 @@ import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.repository.MemberRepository;
 import com.aftasapi.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> findAll(Pageable pageable) {
-        return memberRepository.findAll(pageable).stream().toList();
+    public Page<Member> findAll(Pageable pageable) {
+        return memberRepository.findAll(pageable);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> findAllByCompetitionCode(String competitionCode) {
+    public List<Member> findAllMembersWithHuntingForCompetition(String competitionCode) {
         return memberRepository.findAllByRankingCompetitionCode(competitionCode);
     }
 }

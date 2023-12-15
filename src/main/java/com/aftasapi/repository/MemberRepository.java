@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByIdentityNumber(String identityNumber);
 
-    @Query("SELECT m FROM Member m WHERE m.number IN (SELECT r.member.number FROM Ranking r WHERE r.id.competitionCode = :competitionCode)")
+    @Query("SELECT r.member FROM Ranking r WHERE r.competition.code = :competitionCode")
     List<Member> findAllByRankingCompetitionCode(String competitionCode);
 }

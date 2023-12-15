@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -25,10 +25,10 @@ public class CompetitionDTO implements Serializable {
     private Date date;
 
     @NotNull(message = "Start time cannot be null")
-    private Time startTime;
+    private LocalTime startTime;
 
     @NotNull(message = "End time cannot be null")
-    private Time endTime;
+    private LocalTime endTime;
 
     @NotNull(message = "Location cannot be null")
     private String location;

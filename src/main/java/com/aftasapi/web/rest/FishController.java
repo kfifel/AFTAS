@@ -7,7 +7,6 @@ import com.aftasapi.service.FishService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,12 +23,12 @@ public class FishController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<Page<FishDto>> getAllFishes(
+    public ResponseEntity<List<FishDto>> getAllFishes(
             @ParameterObject Pageable pageable
     ) {
-        Page<Fish> fishPage = fishService.findAll(pageable);
+        List<Fish> fishPage = fishService.findAll(pageable).stream().toList();
         return ResponseEntity.ok(
-                fishPage.map(fish -> modelMapper.map(fish, FishDto.class))
+                fishPage.stream().map(fish -> modelMapper.map(fish, FishDto.class)).toList()
         );
     }
 

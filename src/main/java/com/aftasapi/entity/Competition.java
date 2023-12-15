@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class Competition {
     @Id
     private String code;
     private Date date;
-    private Time startTime;
-    private Time endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Integer numberOfParticipant;
     private String location;
     private Double amount;

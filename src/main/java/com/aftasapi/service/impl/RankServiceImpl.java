@@ -6,6 +6,8 @@ import com.aftasapi.service.RankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RankServiceImpl implements RankService {
@@ -16,6 +18,11 @@ public class RankServiceImpl implements RankService {
     public Ranking save(Ranking rank) {
         canRankBeSaved(rank);
         return rankingRepository.save(rank);
+    }
+
+    @Override
+    public void saveAll(List<Ranking> rankings) {
+        rankingRepository.saveAll(rankings);
     }
 
     private void canRankBeSaved(Ranking rank) {

@@ -14,5 +14,5 @@ public interface CompetitionRepository extends JpaRepository<Competition, String
 
     Optional<Competition> findByCode(String code);
 
-    Optional<Competition> findByRanksMember(Member member);
+    Optional<Competition> findByCodeAndRanksMember(String code, Member member);
 }

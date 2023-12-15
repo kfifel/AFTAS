@@ -49,7 +49,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition update(Competition competition) throws ResourceNotFoundException {
-        if(competition.getCode() == null || competitionRepository.existsById(competition.getCode()))
+        if(competition.getCode() == null || !competitionRepository.existsById(competition.getCode()))
             throw new ResourceNotFoundException("Competition code is required");
         return competitionRepository.save(competition);
     }
@@ -84,6 +84,12 @@ public class CompetitionServiceImpl implements CompetitionService {
         if (findByDate(competition.getDate()).isPresent()) {
             throw new IllegalArgumentException("Competition already exists in this date: " + competition.getDate());
         }
+
+        if(competition.getStartTime().isAfter(competition.getEndTime()))
+            throw new IllegalArgumentException("Start time cannot be after end time");
+
+        if(competition.getStartTime().isBefore(competition.getEndTime().plusHours(4)))
+            throw new IllegalArgumentException("Competition duration cannot be less than 4 hours");
     }
 
     @Override
@@ -103,7 +109,7 @@ public class CompetitionServiceImpl implements CompetitionService {
             throw new ResourceNotFoundException("Competition or member not found");
 
         Competition competition = findByCode(competitionCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Competition not found with code: "+ competitionCode));
 
         Member member = memberService.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
@@ -118,6 +124,7 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
+    @Transactional
     public List<Ranking> calculateRanking(String competitionCode) throws ResourceNotFoundException {
         Competition competition = findByCode(competitionCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found"));
@@ -135,6 +142,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         for (int i = 0; i < rankings.size(); i++) {
             rankings.get(i).setRank(i + 1);
         }
+        rankService.saveAll(rankings);
         return rankings;
     }
 
@@ -142,7 +150,7 @@ public class CompetitionServiceImpl implements CompetitionService {
     public List<Member> findAllMembersByCompetitionCode(String competitionCode) {
         if(!competitionRepository.existsById(competitionCode))
             throw new IllegalArgumentException("Competition not found");
-        return memberService.findAllByCompetitionCode(competitionCode);
+        return memberService.findAllMembersWithHuntingForCompetition(competitionCode);
     }
 
     private Ranking createRank(Competition competition, Member member) {
@@ -162,12 +170,12 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     private void checkIfCanRegisterToCompetition(Competition competition, Member member) throws IllegalArgumentException {
-        if(competitionRepository.findByRanksMember(member).isPresent()) {
+        if(competitionRepository.findByCodeAndRanksMember(competition.getCode(), member).isPresent()) {
             throw new IllegalArgumentException("Member already registered to this competition");
         }
 
         // transfert competition.getDate(), competition.getStartTime() to LocalDateTime
-        LocalTime startTime = competition.getStartTime().toLocalTime();
+        LocalTime startTime = competition.getStartTime();
         LocalDate dateOfCompetition = new java.sql.Date(competition.getDate().getTime()).toLocalDate();
 
         LocalDateTime dateTime = dateOfCompetition.atTime(startTime);
