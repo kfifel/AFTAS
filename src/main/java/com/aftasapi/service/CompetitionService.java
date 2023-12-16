@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CompetitionService {
-    Page<Competition> findAll(Pageable pageable);
+    Page<Competition> findAll(Pageable pageable, String query);
 
     Competition save(Competition competition) throws IllegalArgumentException;
 

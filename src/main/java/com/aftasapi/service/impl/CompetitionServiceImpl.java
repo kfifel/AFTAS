@@ -34,7 +34,9 @@ public class CompetitionServiceImpl implements CompetitionService {
     private final RankService rankService;
 
     @Override
-    public Page<Competition> findAll(Pageable pageable) {
+    public Page<Competition> findAll(Pageable pageable, String query) {
+        if(query != null && !query.isEmpty())
+            return competitionRepository.findAllByLocationContainsIgnoreCase(query, pageable);
         return competitionRepository.findAll(pageable);
     }
 

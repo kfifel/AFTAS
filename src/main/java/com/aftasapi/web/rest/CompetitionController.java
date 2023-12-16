@@ -31,13 +31,13 @@ public class CompetitionController {
 
     @GetMapping
     public ResponseEntity<PaginatedResponse<CompetitionDTO>> getAllCompetition(
-            @ParameterObject Pageable pageable
-            //@RequestParam(required = false, name = "query") String query
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false, name = "query") String query
     ) {
-        Page<Competition> competitions = competitionService.findAll(pageable);
+        Page<Competition> competitions = competitionService.findAll(pageable, query);
         PaginatedResponse<CompetitionDTO> response = PaginatedResponse.<CompetitionDTO>builder()
                 .content(
-                        competitions.stream()
+                            competitions.stream()
                                 .map(competition -> modelMapper.map(competition, CompetitionDTO.class))
                                 .toList()
                 )

@@ -14,6 +14,9 @@ import com.aftasapi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -52,6 +55,24 @@ public class HuntingServiceImpl implements HuntingService {
 
     private Hunting canHuntingBeSaved(FishHuntingDto fishHuntingDto) throws ResourceNotFoundException {
 
+        Optional<Competition> competition = competitionService.findByCode(fishHuntingDto.getCompetitionCode());
+        if(competition.isEmpty()) {
+            throw new ResourceNotFoundException("Competition does not exist with code: " + fishHuntingDto.getCompetitionCode());
+        }
+
+        LocalTime startTime = competition.get().getStartTime();
+        LocalDate dateOfCompetition = new java.sql.Date(competition.get().getDate().getTime()).toLocalDate();
+        LocalDateTime startCompetitionLocalDateTime = dateOfCompetition.atTime(startTime);
+        if(LocalDateTime.now().isBefore(startCompetitionLocalDateTime)) {
+            throw new IllegalArgumentException("Competition has not started yet");
+        }
+
+        LocalTime endTime = competition.get().getEndTime();
+        LocalDateTime endCompetitionLocalDateTime = dateOfCompetition.atTime(endTime);
+        if (LocalDateTime.now().isAfter(endCompetitionLocalDateTime)) {
+            throw new IllegalArgumentException("Competition has ended");
+        }
+
         Optional<Fish> fish = fishService.findByName(fishHuntingDto.getFishName());
         if(fish.isEmpty()) {
             throw new ResourceNotFoundException("Fish does not exist with name: " + fishHuntingDto.getFishName());
@@ -60,11 +81,6 @@ public class HuntingServiceImpl implements HuntingService {
         Optional<Member> member = memberService.findById(fishHuntingDto.getMemberId());
         if(member.isEmpty()) {
             throw new ResourceNotFoundException("Member does not exist with id: " + fishHuntingDto.getMemberId());
-        }
-
-        Optional<Competition> competition = competitionService.findByCode(fishHuntingDto.getCompetitionCode());
-        if(competition.isEmpty()) {
-            throw new ResourceNotFoundException("Competition does not exist with code: " + fishHuntingDto.getCompetitionCode());
         }
 
         if(fishHuntingDto.getFishWeight() < fish.get().getAverageWeight()) {
