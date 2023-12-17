@@ -34,10 +34,15 @@ public class CompetitionServiceImpl implements CompetitionService {
     private final RankService rankService;
 
     @Override
+    @Transactional
     public Page<Competition> findAll(Pageable pageable, String query) {
-        if(query != null && !query.isEmpty())
-            return competitionRepository.findAllByLocationContainsIgnoreCase(query, pageable);
-        return competitionRepository.findAll(pageable);
+        Page<Competition> page;
+        if(query != null && !query.isEmpty() && !query.isBlank()) {
+            query = query.trim();
+            page = competitionRepository.findAllByLocationContainsIgnoreCaseOrCodeContainsIgnoreCase("%" + query + "%", "%" + query + "%", pageable);
+        } else
+            page = competitionRepository.findAll(pageable);
+        return page;
     }
 
     @Override

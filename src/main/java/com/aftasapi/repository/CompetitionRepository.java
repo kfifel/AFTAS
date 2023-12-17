@@ -19,6 +19,7 @@ public interface CompetitionRepository extends JpaRepository<Competition, String
 
     Optional<Competition> findByCodeAndRanksMember(String code, Member member);
 
-    @Query("SELECT c FROM Competition c WHERE c.location LIKE %?1%")
-    Page<Competition> findAllByLocationContainsIgnoreCase(String query, Pageable pageable);
+
+    @Query("SELECT c FROM Competition c WHERE lower(c.location) LIKE lower(concat('%', ?1,'%') ) OR lower(c.code) LIKE lower(concat('%', ?2,'%'))")
+    Page<Competition> findAllByLocationContainsIgnoreCaseOrCodeContainsIgnoreCase(String query1, String query2, Pageable pageable);
 }
