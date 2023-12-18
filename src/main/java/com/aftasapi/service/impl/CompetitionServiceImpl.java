@@ -95,7 +95,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         if(competition.getStartTime().isAfter(competition.getEndTime()))
             throw new IllegalArgumentException("Start time cannot be after end time");
 
-        if(competition.getStartTime().isBefore(competition.getEndTime().plusHours(4)))
+        if(competition.getStartTime().isAfter(competition.getEndTime().minusHours(4)))
             throw new IllegalArgumentException("Competition duration cannot be less than 4 hours");
     }
 
