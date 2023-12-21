@@ -9,6 +9,8 @@ import com.aftasapi.entity.Ranking;
 import com.aftasapi.exception.ResourceNotFoundException;
 import com.aftasapi.service.CompetitionService;
 import com.aftasapi.service.HuntingService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.api.annotations.ParameterObject;
@@ -18,11 +20,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/competitions")
 @RequiredArgsConstructor
+@OpenAPIDefinition
 public class CompetitionController {
 
     private final CompetitionService competitionService;
@@ -30,6 +34,7 @@ public class CompetitionController {
     private final HuntingService huntingService;
 
     @GetMapping
+    @Operation(summary = "Get all competitions")
     public ResponseEntity<PaginatedResponse<CompetitionDTO>> getAllCompetition(
             @ParameterObject Pageable pageable,
             @RequestParam(required = false, name = "query") String query
@@ -50,7 +55,7 @@ public class CompetitionController {
     }
 
     @PostMapping
-    public ResponseEntity<CompetitionDTO> createCompetition(@RequestBody @Validated CompetitionDTO competitionDTO) {
+    public ResponseEntity<CompetitionDTO> createCompetition(@RequestBody @Valid CompetitionDTO competitionDTO) {
         Competition save = competitionService.save(modelMapper.map(competitionDTO, Competition.class));
         return ResponseEntity.ok(modelMapper.map(save, CompetitionDTO.class));
     }

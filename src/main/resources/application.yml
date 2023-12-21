@@ -35,3 +35,6 @@ logging:
     name: aftas-api.log
   level:
     root: INFO
+springdoc:
+  api-docs:
+    path: /api-docs
