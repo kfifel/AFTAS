@@ -147,7 +147,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         });
         rankings.sort((o1, o2) -> o2.getScore() - o1.getScore());
         for (int i = 0; i < rankings.size(); i++) {
-            rankings.get(i).setRank(i + 1);
+            rankings.get(i).setRankTop(i + 1);
         }
         rankService.saveAll(rankings);
         return rankings;
@@ -170,7 +170,7 @@ public class CompetitionServiceImpl implements CompetitionService {
                 )
                 .competition(competition)
                 .member(member)
-                .rank(0)
+                .rankTop(0)
                 .score(0)
                 .build();
         return rankService.save(ranking);

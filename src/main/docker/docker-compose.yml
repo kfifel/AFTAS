@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: aftas
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    ports:
+      - "3306:3306"
+
+  spring-application-back:
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aftas?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+
+  aftas-application-front:
+    build:
+      context: E:\env\Angular\skote-angular\Starterkit
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - spring-application-back

@@ -18,7 +18,7 @@ public class Ranking implements java.io.Serializable{
     @EmbeddedId
     private RankingId id;
 
-    private Integer rank;
+    private Integer rankTop;
     private Integer score;
 
     @ManyToOne

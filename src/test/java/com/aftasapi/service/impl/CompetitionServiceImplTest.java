@@ -98,9 +98,9 @@ class CompetitionServiceImplTest {
 
         assertEquals(3, result.size());
 
-        assertEquals(1, result.get(0).getRank());
-        assertEquals(2, result.get(1).getRank());
-        assertEquals(3, result.get(2).getRank());
+        assertEquals(1, result.get(0).getRankTop());
+        assertEquals(2, result.get(1).getRankTop());
+        assertEquals(3, result.get(2).getRankTop());
 
         assertEquals(5000, result.get(0).getScore());
         assertEquals(1500, result.get(2).getScore());
