@@ -1,9 +1,9 @@
-package com.aftasapi.mapper;
+package com.aftasapi.web.mapper;
 
 import com.aftasapi.entity.AppUser;
 import com.aftasapi.entity.Role;
-import com.aftasapi.dto.request.UserRequestDto;
-import com.aftasapi.dto.response.UserResponseDto;
+import com.aftasapi.web.dto.request.UserRequestDto;
+import com.aftasapi.web.dto.response.UserResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;

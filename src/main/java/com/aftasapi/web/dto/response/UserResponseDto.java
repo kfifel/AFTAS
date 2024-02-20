@@ -1,4 +1,4 @@
-package com.aftasapi.dto.response;
+package com.aftasapi.web.dto.response;
 
 
 import lombok.AllArgsConstructor;

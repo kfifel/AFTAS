@@ -1,7 +1,7 @@
 package com.aftasapi.web.rest;
 
-import com.aftasapi.dto.FishDto;
-import com.aftasapi.dto.FishInputDto;
+import com.aftasapi.web.dto.FishDto;
+import com.aftasapi.web.dto.FishInputDto;
 import com.aftasapi.entity.Fish;
 import com.aftasapi.service.FishService;
 import lombok.RequiredArgsConstructor;

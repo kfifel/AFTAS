@@ -1,4 +1,4 @@
-package com.aftasapi.dto.request;
+package com.aftasapi.web.dto.request;
 
 import com.aftasapi.security.validation.UniqueUsername;
 import lombok.AllArgsConstructor;

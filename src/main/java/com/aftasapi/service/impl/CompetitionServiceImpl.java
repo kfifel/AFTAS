@@ -4,7 +4,7 @@ import com.aftasapi.entity.Competition;
 import com.aftasapi.entity.Member;
 import com.aftasapi.entity.Ranking;
 import com.aftasapi.entity.embedded.RankingId;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.repository.CompetitionRepository;
 import com.aftasapi.service.CompetitionService;
 import com.aftasapi.service.MemberService;

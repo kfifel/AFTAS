@@ -1,8 +1,8 @@
-package com.aftasapi.mapper;
+package com.aftasapi.web.mapper;
 
 
-import com.aftasapi.dto.MemberDTO;
-import com.aftasapi.dto.MemberInputDTO;
+import com.aftasapi.web.dto.MemberDTO;
+import com.aftasapi.web.dto.MemberInputDTO;
 import com.aftasapi.entity.Member;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;

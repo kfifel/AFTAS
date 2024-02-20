@@ -3,8 +3,8 @@ package com.aftasapi.security;
 import com.aftasapi.entity.AppUser;
 import com.aftasapi.security.auth.JwtAuthenticationResponse;
 import com.aftasapi.utils.ValidationException;
-import com.aftasapi.dto.request.SignInRequest;
-import com.aftasapi.dto.request.SignUpRequest;
+import com.aftasapi.web.dto.request.SignInRequest;
+import com.aftasapi.web.dto.request.SignUpRequest;
 
 public interface AuthenticationService {
 

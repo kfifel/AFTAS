@@ -8,9 +8,9 @@ import com.aftasapi.security.jwt.TokenType;
 import com.aftasapi.service.UserService;
 import com.aftasapi.utils.CustomError;
 import com.aftasapi.utils.ValidationException;
-import com.aftasapi.dto.request.SignInRequest;
-import com.aftasapi.dto.request.SignUpRequest;
-import com.aftasapi.exception.UnauthorizedException;
+import com.aftasapi.web.dto.request.SignInRequest;
+import com.aftasapi.web.dto.request.SignUpRequest;
+import com.aftasapi.web.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +35,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .accountNonLocked(false)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
         .build();
         userService.save(user);
     }

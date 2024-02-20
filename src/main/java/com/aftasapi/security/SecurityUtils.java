@@ -22,19 +22,29 @@ public final class SecurityUtils {
      *
      * @return the login of the current user.
      */
-    public static String getCurrentUserEmail() {
+    public static UserDetails getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         return extractPrincipal(authentication);
     }
 
-    private static String extractPrincipal(Authentication authentication) {
+    /**
+     * Get the login of the current user email.
+     *
+     * @return the login of the current user email.
+     */
+    public static String getCurrentUserEmail() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        UserDetails userDetails = extractPrincipal(authentication);
+        return userDetails == null ? null : userDetails.getUsername();
+    }
+
+    private static UserDetails extractPrincipal(Authentication authentication) {
         if (authentication == null) {
             return null;
         } else if (authentication.getPrincipal() instanceof UserDetails springSecurityUser) {
-            return springSecurityUser.getUsername();
-        } else if (authentication.getPrincipal() instanceof String username) {
-            return username;
+            return springSecurityUser;
         }
         return null;
     }

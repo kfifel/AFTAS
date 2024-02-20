@@ -1,7 +1,7 @@
 package com.aftasapi.service.impl;
 
 import com.aftasapi.entity.Member;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.repository.MemberRepository;
 import com.aftasapi.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;

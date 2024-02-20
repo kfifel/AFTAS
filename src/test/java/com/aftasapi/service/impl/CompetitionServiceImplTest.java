@@ -1,7 +1,7 @@
 package com.aftasapi.service.impl;
 
 import com.aftasapi.entity.*;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.repository.CompetitionRepository;
 import com.aftasapi.service.MemberService;
 import com.aftasapi.service.RankService;

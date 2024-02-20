@@ -1,4 +1,4 @@
-package com.aftasapi.dto;
+package com.aftasapi.web.dto;
 
 import com.aftasapi.entity.Member;
 import lombok.AllArgsConstructor;

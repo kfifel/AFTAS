@@ -3,7 +3,7 @@ package com.aftasapi.service;
 import com.aftasapi.entity.Competition;
 import com.aftasapi.entity.Member;
 import com.aftasapi.entity.Ranking;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

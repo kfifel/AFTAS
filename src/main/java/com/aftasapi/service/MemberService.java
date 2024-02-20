@@ -1,7 +1,7 @@
 package com.aftasapi.service;
 
 import com.aftasapi.entity.Member;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

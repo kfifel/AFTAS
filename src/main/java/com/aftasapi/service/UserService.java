@@ -2,8 +2,8 @@ package com.aftasapi.service;
 
 import com.aftasapi.entity.AppUser;
 import com.aftasapi.utils.ValidationException;
-import com.aftasapi.dto.RoleDto;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.dto.RoleDto;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 

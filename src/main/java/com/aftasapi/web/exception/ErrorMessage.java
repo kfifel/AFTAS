@@ -1,4 +1,4 @@
-package com.aftasapi.exception;
+package com.aftasapi.web.exception;
 
 import lombok.Getter;
 

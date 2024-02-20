@@ -1,7 +1,7 @@
 package com.aftasapi.web.rest;
 
 
-import com.aftasapi.dto.LevelDto;
+import com.aftasapi.web.dto.LevelDto;
 import com.aftasapi.entity.Level;
 import com.aftasapi.service.LevelService;
 import lombok.RequiredArgsConstructor;

@@ -4,14 +4,15 @@ import com.aftasapi.entity.AppUser;
 import com.aftasapi.entity.Role;
 import com.aftasapi.repository.RoleRepository;
 import com.aftasapi.repository.UserRepository;
+import com.aftasapi.security.AuthoritiesConstants;
 import com.aftasapi.security.SecurityUtils;
 import com.aftasapi.service.RoleService;
 import com.aftasapi.service.UserService;
 import com.aftasapi.utils.CustomError;
 import com.aftasapi.utils.ValidationException;
-import com.aftasapi.dto.RoleDto;
-import com.aftasapi.exception.EmailAlreadyExistException;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.dto.RoleDto;
+import com.aftasapi.web.exception.EmailAlreadyExistException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,11 @@ public class UserServiceImpl implements UserService {
         findByEmail(user.getEmail()).ifPresent(u -> {
             throw new EmailAlreadyExistException();
         });
+        if( SecurityUtils.isAuthenticated() &&
+            SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ROLE_MANAGER, AuthoritiesConstants.ROLE_ADMIN)
+        ) {
+            user.setAccountNonLocked(true);
+        }
         return userRepository.save(user);
     }
 

@@ -1,8 +1,8 @@
 package com.aftasapi.service;
 
-import com.aftasapi.dto.FishHuntingDto;
+import com.aftasapi.web.dto.FishHuntingDto;
 import com.aftasapi.entity.Hunting;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 
 public interface HuntingService {
 

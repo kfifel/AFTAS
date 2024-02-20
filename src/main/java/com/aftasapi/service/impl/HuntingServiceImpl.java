@@ -1,11 +1,11 @@
 package com.aftasapi.service.impl;
 
-import com.aftasapi.dto.FishHuntingDto;
+import com.aftasapi.web.dto.FishHuntingDto;
 import com.aftasapi.entity.Competition;
 import com.aftasapi.entity.Fish;
 import com.aftasapi.entity.Hunting;
 import com.aftasapi.entity.Member;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.repository.HuntingRepository;
 import com.aftasapi.service.CompetitionService;
 import com.aftasapi.service.FishService;

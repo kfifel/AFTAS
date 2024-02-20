@@ -32,7 +32,6 @@ public class AppUser implements UserDetails {
 
     private String password;
 
-
     private boolean accountNonExpired;
 
     private boolean accountNonLocked;

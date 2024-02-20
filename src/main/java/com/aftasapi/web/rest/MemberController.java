@@ -2,10 +2,10 @@ package com.aftasapi.web.rest;
 
 
 import com.aftasapi.common.PaginatedResponse;
-import com.aftasapi.dto.MemberDTO;
-import com.aftasapi.dto.MemberInputDTO;
+import com.aftasapi.web.dto.MemberDTO;
+import com.aftasapi.web.dto.MemberInputDTO;
 import com.aftasapi.entity.Member;
-import com.aftasapi.exception.ResourceNotFoundException;
+import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
