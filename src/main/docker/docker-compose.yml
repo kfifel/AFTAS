@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 
 services:
   mysql:
@@ -11,7 +11,7 @@ services:
     ports:
       - "3306:3306"
 
-  spring-application-back:
+  aftas-application-back:
     build:
       context: .
       dockerfile: Dockerfile
@@ -31,4 +31,4 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - spring-application-back
+      - aftas-application-back

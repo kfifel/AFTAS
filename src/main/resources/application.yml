@@ -35,6 +35,18 @@ logging:
     name: aftas-api.log
   level:
     root: INFO
+
 springdoc:
   api-docs:
     path: /api-docs
+
+token:
+  signing:
+    key: Q2lyNXNOTENrV1dNRGI2NDlJc1p5bTBxM2p1M2RZeTc1amtmbW1HRnZHST0=
+  validity:
+    access:
+      in:
+        minutes: 1
+    refresh:
+      in:
+        month: 1
