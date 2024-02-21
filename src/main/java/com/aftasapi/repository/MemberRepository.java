@@ -14,4 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT r.member FROM Ranking r WHERE r.competition.code = :competitionCode")
     List<Member> findAllByRankingCompetitionCode(String competitionCode);
+
+    Optional<Member> findByEmail(String email);
 }

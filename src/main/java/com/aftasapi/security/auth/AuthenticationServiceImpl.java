@@ -1,11 +1,12 @@
 package com.aftasapi.security.auth;
 
-import com.aftasapi.entity.AppUser;
+import com.aftasapi.entity.Member;
+import com.aftasapi.repository.MemberRepository;
 import com.aftasapi.repository.UserRepository;
 import com.aftasapi.security.AuthenticationService;
 import com.aftasapi.security.jwt.JwtService;
 import com.aftasapi.security.jwt.TokenType;
-import com.aftasapi.service.UserService;
+import com.aftasapi.service.MemberService;
 import com.aftasapi.utils.CustomError;
 import com.aftasapi.utils.ValidationException;
 import com.aftasapi.web.dto.request.SignInRequest;
@@ -22,19 +23,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserService userService;
+    private final MemberService userService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final MemberRepository userRepository;
 
     @Override
     public void signup(SignUpRequest request) {
-        AppUser user = AppUser.builder()
+        Member user = Member.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .name(request.getFirstName())
+                .familyName(request.getLastName())
                 .accountNonLocked(false)
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
@@ -48,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        Member user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var accessToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
         var refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
@@ -73,7 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AppUser me() {
+    public Member me() {
         return userService.getCurrentUser();
     }
 }

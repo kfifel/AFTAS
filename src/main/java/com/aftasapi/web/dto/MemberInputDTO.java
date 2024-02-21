@@ -17,21 +17,17 @@ import java.util.Date;
 @AllArgsConstructor
 public class MemberInputDTO implements Serializable {
 
-    @Null(message = "Number must be null")
     private Long number;
 
-    @NotNull(message = "Name is mandatory")
     @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @NotNull(message = "Family name is mandatory")
     @NotBlank(message = "Family name is mandatory")
     private String familyName;
 
     @NotNull(message = "Birth date is mandatory")
     private Date accessionDate;
 
-    @NotNull(message = "Nationality is mandatory")
     @NotBlank(message = "Nationality could not be blank")
     private String nationality;
 

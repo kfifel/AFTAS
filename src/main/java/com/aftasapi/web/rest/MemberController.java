@@ -64,6 +64,6 @@ public class MemberController {
 
     @DeleteMapping("/{id}")
     public void deleteMember(@PathVariable Long id) throws ResourceNotFoundException{
-        memberService.deleteMember(id);
+        memberService.delete(id);
     }
 }

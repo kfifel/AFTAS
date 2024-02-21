@@ -1,6 +1,6 @@
 package com.aftasapi.web.mapper;
 
-import com.aftasapi.entity.AppUser;
+import com.aftasapi.entity.Member;
 import com.aftasapi.entity.Role;
 import com.aftasapi.web.dto.request.UserRequestDto;
 import com.aftasapi.web.dto.response.UserResponseDto;
@@ -15,28 +15,31 @@ public class UserDtoMapper {
     private UserDtoMapper() {
     }
 
-    public static AppUser toEntity(UserRequestDto userDto) {
+    public static Member toEntity(UserRequestDto userDto) {
         List<Role> roles = new ArrayList<>();
         if(userDto.getAuthorities() != null){
             for (String role : userDto.getAuthorities()) {
                 roles.add(Role.builder().name(role).build());
             }
         }
-        return AppUser.builder()
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
+        return Member.builder()
+                .name(userDto.getFirstName())
+                .familyName(userDto.getLastName())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .roles(roles)
                 .build();
     }
 
-    public static UserResponseDto toDto(AppUser user) {
+    public static UserResponseDto toDto(Member user) {
         return UserResponseDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
+                .id(user.getNumber())
+                .name(user.getName())
+                .familyName(user.getFamilyName())
                 .email(user.getEmail())
+                .accessionDate(user.getAccessionDate())
+                .nationality(user.getNationality())
+                .identityNumber(user.getIdentityNumber())
                 .createdAt(user.getCreatedAt())
                 .verifiedAt(user.getVerifiedAt())
                 .authorities(user.getRoles().stream().map(Role::getName).toList())

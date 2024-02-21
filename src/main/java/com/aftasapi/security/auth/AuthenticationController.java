@@ -1,6 +1,7 @@
 package com.aftasapi.security.auth;
 
 import com.aftasapi.entity.AppUser;
+import com.aftasapi.entity.Member;
 import com.aftasapi.security.AuthenticationService;
 import com.aftasapi.utils.ResponseApi;
 import com.aftasapi.utils.ValidationException;
@@ -38,7 +39,7 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponseDto> me() {
-        AppUser result = authenticationService.me();
+        Member result = authenticationService.me();
         return ResponseEntity.ok(UserDtoMapper.toDto(result));
     }
 

@@ -1,6 +1,7 @@
 package com.aftasapi.service.impl;
 
 import com.aftasapi.entity.AppUser;
+import com.aftasapi.entity.Member;
 import com.aftasapi.entity.Role;
 import com.aftasapi.repository.RoleRepository;
 import com.aftasapi.repository.UserRepository;
@@ -31,27 +32,6 @@ import static com.aftasapi.utils.AppConstants.USER_NOT_FOUND;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final RoleService roleService;
-    private final RoleRepository roleRepository;
-
-    @Override
-    public AppUser save(AppUser user) {
-        findByEmail(user.getEmail()).ifPresent(u -> {
-            throw new EmailAlreadyExistException();
-        });
-        if( SecurityUtils.isAuthenticated() &&
-            SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ROLE_MANAGER, AuthoritiesConstants.ROLE_ADMIN)
-        ) {
-            user.setAccountNonLocked(true);
-        }
-        return userRepository.save(user);
-    }
-
-    @Override
-    public List<AppUser> findAll() {
-        return userRepository.findAll();
-    }
 
     @Override
     public Optional<AppUser> findById(Long id) {
@@ -65,29 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void revokeRole(Long id, List<RoleDto> roles) throws ValidationException {
-        Optional<AppUser> userOptional = userRepository.findById(id);
-        if(userOptional.isPresent()){
-            AppUser user = userOptional.get();
-            List<Role> roleList = new ArrayList<>();
-            roles.forEach(roleDto -> roleService.
-                    findByName(roleDto.getName()).ifPresent(roleList::add));
 
-            if (new HashSet<>(user.getRoles()).containsAll(roleList)) {
-                user.getRoles().removeAll(roleList);
-                userRepository.save(user);
-            } else {
-                throw new ValidationException(CustomError.builder()
-                        .field("roles")
-                        .message("User does not have all specified roles.")
-                        .build());
-            }
-        }
-        else {
-            throw new ValidationException(CustomError.builder()
-                    .field("user id")
-                    .message("User does not exist")
-                    .build());
-        }
     }
 
     @Override
@@ -141,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser getCurrentUser() {
+    public Member getCurrentUser() {
         String currentUserLogin = SecurityUtils.getCurrentUserEmail();
         if(currentUserLogin == null)
             throw new BadCredentialsException(USER_NOT_FOUND);
