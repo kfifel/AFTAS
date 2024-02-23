@@ -15,7 +15,7 @@ spring:
 
   # Database Configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/aftas?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/aftas_v1?createDatabaseIfNotExist=true
     username: root
     password:
   jpa:
@@ -46,7 +46,7 @@ token:
   validity:
     access:
       in:
-        minutes: 1
+        minutes: 10
     refresh:
       in:
         month: 1

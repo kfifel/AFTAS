@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -34,13 +36,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf()
-                    .disable()
-                .cors()
+                    .csrfTokenRepository(csrfTokenRepository())
+                    .ignoringAntMatchers("/api/v1/auth/**")
                 .and()
-//                    .oauth2Login()
-//                .and()
+                    .cors()
+                .and()
                     .authorizeHttpRequests()
-                    //.antMatchers("/api/v1/admin").hasAuthority(AuthoritiesConstants.ROLE_ADMIN)
                     .antMatchers("/api/v1/auth/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
@@ -72,4 +73,9 @@ public class SecurityConfiguration {
         return config.getAuthenticationManager();
     }
 
+
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return CookieCsrfTokenRepository.withHttpOnlyFalse();
+    }
 }

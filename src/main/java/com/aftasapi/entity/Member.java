@@ -12,18 +12,14 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Builder
+@Builder(builderMethodName = "memberBuilder")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member implements Serializable {
+@PrimaryKeyJoinColumn(name = "user_id")
+public class Member extends AppUser implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
-    @SequenceGenerator(name = "member_seq", initialValue = 1000, allocationSize = 1)
+    @Column(nullable = false, unique = true)
     private Long number;
-
-    private String name;
-    private String familyName;
     private Date accessionDate;
     private String nationality;
     @Enumerated(EnumType.STRING)
@@ -37,5 +33,21 @@ public class Member implements Serializable {
     @OneToMany(mappedBy = "member")
     @ToString.Exclude
     private List<Hunting> huntings;
+
+    public String getName() {
+        return this.getFirstName();
+    }
+
+    public void setName(String name) {
+        this.setFirstName(name);
+    }
+
+    public String getFamilyName() {
+        return this.getLastName();
+    }
+
+    public void setFamilyName(String name) {
+        this.setLastName(name);
+    }
 }
 

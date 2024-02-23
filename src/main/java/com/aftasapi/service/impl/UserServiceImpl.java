@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
             throw new EmailAlreadyExistException();
         });
         if( SecurityUtils.isAuthenticated() &&
-            SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ROLE_MANAGER, AuthoritiesConstants.ROLE_ADMIN)
+            SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ROLE_MANAGER)
         ) {
             user.setAccountNonLocked(true);
         }

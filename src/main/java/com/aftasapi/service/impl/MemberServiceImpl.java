@@ -25,6 +25,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member save(Member member) {
         canMemberBeSaved(member);
+        member.setAccountNonLocked(true);
+        member.setAccountNonExpired(true);
+        member.setCredentialsNonExpired(true);
+        member.setEnabled(true);
         return memberRepository.save(member);
     }
 

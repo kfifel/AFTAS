@@ -1,4 +1,4 @@
-package com.aftasapi.security;
+package com.aftasapi.security.auth;
 
 import com.aftasapi.entity.AppUser;
 import com.aftasapi.security.auth.JwtAuthenticationResponse;

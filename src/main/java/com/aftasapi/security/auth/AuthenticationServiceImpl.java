@@ -2,7 +2,6 @@ package com.aftasapi.security.auth;
 
 import com.aftasapi.entity.AppUser;
 import com.aftasapi.repository.UserRepository;
-import com.aftasapi.security.AuthenticationService;
 import com.aftasapi.security.jwt.JwtService;
 import com.aftasapi.security.jwt.TokenType;
 import com.aftasapi.service.UserService;

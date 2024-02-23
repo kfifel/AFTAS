@@ -1,7 +1,6 @@
 package com.aftasapi.security.auth;
 
 import com.aftasapi.entity.AppUser;
-import com.aftasapi.security.AuthenticationService;
 import com.aftasapi.utils.ResponseApi;
 import com.aftasapi.utils.ValidationException;
 import com.aftasapi.web.dto.request.SignInRequest;

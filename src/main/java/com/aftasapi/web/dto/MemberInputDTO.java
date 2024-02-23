@@ -40,4 +40,10 @@ public class MemberInputDTO implements Serializable {
 
     @NotNull(message = "Identity Number is mandatory")
     private String identityNumber;
+
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String email;
 }

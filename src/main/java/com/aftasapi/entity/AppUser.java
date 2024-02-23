@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class AppUser implements UserDetails {
 
     @Id
