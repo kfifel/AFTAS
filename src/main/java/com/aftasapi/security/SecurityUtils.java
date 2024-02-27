@@ -111,4 +111,8 @@ public final class SecurityUtils {
     public static boolean hasCurrentUserThisAuthority(String authority) {
         return hasCurrentUserAnyOfAuthorities(authority);
     }
+
+    public boolean getIsManager() {
+        return hasCurrentUserThisAuthority(AuthoritiesConstants.ROLE_MANAGER);
+    }
 }

@@ -78,7 +78,7 @@ public class HuntingServiceImpl implements HuntingService {
             throw new ResourceNotFoundException("Fish does not exist with name: " + fishHuntingDto.getFishName());
         }
 
-        Optional<Member> member = memberService.findById(fishHuntingDto.getMemberId());
+        Optional<Member> member = memberService.findByNumber(fishHuntingDto.getMemberId());
         if(member.isEmpty()) {
             throw new ResourceNotFoundException("Member does not exist with id: " + fishHuntingDto.getMemberId());
         }

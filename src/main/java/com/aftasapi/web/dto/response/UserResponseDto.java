@@ -21,4 +21,5 @@ public class UserResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime verifiedAt;
     private List<String> authorities;
+    private Boolean enabled;
 }

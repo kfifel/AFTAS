@@ -36,9 +36,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf()
-                    .csrfTokenRepository(csrfTokenRepository())
-                    .ignoringAntMatchers("/api/v1/auth/**")
-                .and()
+                    .disable()
+//                    .csrfTokenRepository(csrfTokenRepository())
+//                    .ignoringAntMatchers("/api/v1/auth/**")
+//                .and()
                     .cors()
                 .and()
                     .authorizeHttpRequests()

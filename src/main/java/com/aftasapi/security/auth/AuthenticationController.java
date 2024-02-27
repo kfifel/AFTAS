@@ -32,7 +32,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<ResponseApi<String>> signup(@RequestBody @Valid SignUpRequest register) throws ValidationException {
         authenticationService.signup(register);
-        return ResponseEntity.ok(ResponseApi.<String>builder().message("Thank you for regist, wait the manager to approve you!").build());
+        return ResponseEntity.ok(ResponseApi.<String>builder().message("Thank you for register, wait the manager to approve you!").build());
     }
 
     @GetMapping("/me")

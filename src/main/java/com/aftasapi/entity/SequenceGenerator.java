@@ -15,6 +15,13 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * This class is used to generate sequence number for the entities
+ * you can use this class to generate sequence number for any entity
+ * explain:
+ * | entity is the name of the entity you want to generate sequence number for
+ * | nextId is the next sequence number to be generated
+*/
 public class SequenceGenerator {
 
     @Id

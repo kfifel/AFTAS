@@ -16,6 +16,7 @@ import java.util.Date;
 public class MemberDTO implements Serializable {
 
     private Long number;
+    private Long id;
     private String name;
     private String familyName;
     private Date accessionDate;
@@ -23,4 +24,6 @@ public class MemberDTO implements Serializable {
     private IdentityDocumentType identityDocumentType;
     private String identityNumber;
     private Integer nbrHunting;
+    private boolean enabled;
+    
 }

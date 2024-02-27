@@ -2,6 +2,9 @@ package com.aftasapi.web.rest;
 
 
 import com.aftasapi.common.PaginatedResponse;
+import com.aftasapi.security.AuthoritiesConstants;
+import com.aftasapi.service.UserService;
+import com.aftasapi.utils.ResponseApi;
 import com.aftasapi.web.dto.MemberDTO;
 import com.aftasapi.web.dto.MemberInputDTO;
 import com.aftasapi.entity.Member;
@@ -13,8 +16,10 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 
 
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
     @PostMapping
@@ -65,5 +71,17 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public void deleteMember(@PathVariable Long id) throws ResourceNotFoundException{
         memberService.deleteMember(id);
+    }
+
+    @PatchMapping("/{id}/enable")
+    @PreAuthorize("hasRole('"+ AuthoritiesConstants.ROLE_MANAGER +"')")
+    public ResponseEntity<ResponseApi<String>> enableMember(
+            @PathVariable("id") Long id,
+            @RequestParam("enable") boolean enable) {
+        userService.enable(id, enable);
+        return ResponseEntity.ok(
+                ResponseApi.<String>builder()
+                    .message("Updated successfully")
+                .build());
     }
 }

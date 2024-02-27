@@ -40,4 +40,6 @@ public interface UserService {
     void softDelete(Long id);
 
     void forceDelete(Long id);
+
+    void enable(Long id, boolean enable);
 }

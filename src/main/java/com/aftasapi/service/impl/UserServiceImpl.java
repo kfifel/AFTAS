@@ -19,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -161,6 +162,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void forceDelete(Long id) {
         userRepository.forceDelete(id);
+    }
+
+    @Override
+    @Transactional
+    public void enable(Long id, boolean enable) {
+        if(!userRepository.existsById(id)) {
+            throw new UsernameNotFoundException("user not found");
+        }
+        userRepository.updateEnableById(enable, id);
     }
 
 

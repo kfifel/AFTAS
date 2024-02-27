@@ -50,7 +50,7 @@ public class OnStartUp implements CommandLineRunner {
                         .accountNonExpired(true)
                         .build());
             }catch (Exception e) {
-                log.error(e.getMessage());
+
             }
         }
         if(levelRepository.count() == 0) {

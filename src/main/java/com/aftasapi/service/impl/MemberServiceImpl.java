@@ -1,34 +1,54 @@
 package com.aftasapi.service.impl;
 
 import com.aftasapi.entity.Member;
+import com.aftasapi.entity.SequenceGenerator;
+import com.aftasapi.repository.RoleRepository;
+import com.aftasapi.repository.SequenceGeneratorRepository;
+import com.aftasapi.security.AuthoritiesConstants;
 import com.aftasapi.web.exception.ResourceNotFoundException;
 import com.aftasapi.repository.MemberRepository;
 import com.aftasapi.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-
-    @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    private final SequenceGeneratorRepository sequenceGeneratorRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public Member save(Member member) {
-        canMemberBeSaved(member);
+        canMemberBeSaved(member); // Validate the member values
+
+        Long nextValue = sequenceGeneratorRepository.findNextValue("member").orElseGet(
+                () -> sequenceGeneratorRepository.save(
+                        SequenceGenerator.builder()
+                                .entity("member")
+                                .nextId(1000L)
+                                .build()
+                ).getNextId()
+        );
         member.setAccountNonLocked(true);
         member.setAccountNonExpired(true);
         member.setCredentialsNonExpired(true);
         member.setEnabled(true);
+        member.setNumber(nextValue);
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        sequenceGeneratorRepository.updateNextIdByEntity("member", ++nextValue);
+        member.setRoles(List.of(Objects.requireNonNull(roleRepository.findByName(AuthoritiesConstants.ROLE_MEMBER).orElse(null))));
         return memberRepository.save(member);
     }
 
@@ -75,12 +95,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean existsById(Long memberId) {
-        return memberRepository.existsById(memberId);
+    public boolean existsByNumber(Long memberId) {
+        return memberRepository.existsByNumber(memberId);
     }
 
     @Override
     public List<Member> findAllMembersWithHuntingForCompetition(String competitionCode) {
         return memberRepository.findAllByRankingCompetitionCode(competitionCode);
+    }
+
+    @Override
+    public Optional<Member> findByNumber(Long number) {
+        return memberRepository.findByNumber(number);
     }
 }

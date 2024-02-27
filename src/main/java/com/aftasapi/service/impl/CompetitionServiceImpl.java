@@ -112,13 +112,13 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     @Transactional
     public Ranking registerMember(String competitionCode, Long memberId) throws ResourceNotFoundException {
-        if(!competitionRepository.existsById(competitionCode) || !memberService.existsById(memberId))
+        if(!competitionRepository.existsById(competitionCode) || !memberService.existsByNumber(memberId))
             throw new ResourceNotFoundException("Competition or member not found");
 
         Competition competition = findByCode(competitionCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Competition not found with code: "+ competitionCode));
 
-        Member member = memberService.findById(memberId)
+        Member member = memberService.findByNumber(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
         checkIfCanRegisterToCompetition(competition, member);
 
